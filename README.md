@@ -3,7 +3,7 @@ Velocitycoin
 
 Port=21333
 RPCPort=21334
-30 Seond Block Times
+30 Second Block Times
 30 Confirmations on Mined Coins.
 
 Block 1-5,000         		- 1000-10000 Block Reward (each block random)
