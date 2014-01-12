@@ -137,7 +137,12 @@ QString ClientModel::formatClientStartupTime() const
 {
     return QDateTime::fromTime_t(nClientStartupTime).toString();
 }
-
+int ClientModel::getHashrate() const
+{
+    /*if (GetTimeMillis() - nHPSTimerStart < 8000)
+        return (boost::int64_t)0;*/
+    return (boost::int64_t)dHashesPerSec;
+}
 // Handlers for core signals
 static void NotifyBlocksChanged(ClientModel *clientmodel)
 {
