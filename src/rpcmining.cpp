@@ -77,11 +77,20 @@ Value getmininginfo(const Array& params, bool fHelp)
     obj.push_back(Pair("generate",      GetBoolArg("-gen")));
     obj.push_back(Pair("genproclimit",  (int)GetArg("-genproclimit", -1)));
     obj.push_back(Pair("hashespersec",  gethashespersec(params, false)));
+    obj.push_back(Pair("networkhashps", getnetworkhashps(params, false)));
     obj.push_back(Pair("pooledtx",      (uint64_t)mempool.size()));
     obj.push_back(Pair("testnet",       fTestNet));
     return obj;
 }
+Value getnetworkhashps(const Array& params, bool fHelp)
+{
+    if (fHelp || params.size() != 0)
+        throw runtime_error(
+            "getnetworkhashps\n"
+            "Returns an estimate of the YACoin network hash rate.");
 
+    return GetNetworkHashPS(params.size() > 0 ? params[0].get_int() : 120);
+}
 Value getworkex(const Array& params, bool fHelp)
 {
     if (fHelp || params.size() > 2)
