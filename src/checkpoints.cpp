@@ -32,6 +32,7 @@ namespace Checkpoints
         ( 0, hashGenesisBlockOfficial )
         ( 10, uint256("0x000002cc8cfcf6231fd76b5f4f3018759bd53805a84a927e844729ebaf12bf09"))
         ( 30001, uint256("0x000000013fc7507e6ce31ce6ad4f227decb21c30380a20e240f52cf683334b58"))
+        ( 50600, uint256("0x000000014ae526339e9806c9ee22669cebf417541721f13dfc6f42d4a195376a"))
         ;
 
     bool CheckHardened(int nHeight, const uint256& hash)
