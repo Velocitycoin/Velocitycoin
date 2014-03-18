@@ -1148,7 +1148,7 @@ unsigned int static GetNextTargetRequired(const CBlockIndex* pindexLast, bool fP
 
     int64 nActualSpacing = pindexPrev->GetBlockTime() - pindexPrevPrev->GetBlockTime();
 	int64 nCheckTime=GetTime();
-     if(nCheckTime > 1395619200) //Human time (GMT): Tue, 07 Jan 2014 02:00:00 GMT
+     if(nCheckTime > 1395619200) //Human time (GMT): Mon, 24 Mar 2014 00:00:00 GMT
      {
          int nHeight = pindexPrev->nHeight+1;
             if (nHeight >= 205830 & nActualSpacing < 0) nActualSpacing = 0;  //Sanity Check on nActualSpacing, corrects negative block values
@@ -2976,14 +2976,14 @@ bool static ProcessMessage(CNode* pfrom, string strCommand, CDataStream& vRecv)
             pfrom->fDisconnect = true;
             return false;
         }
-		if(nTime < 1395619200)
+		if(nTime < 1395619200)//Human time (GMT): Mon, 24 Mar 2014 00:00:00 GMT
          {
              if(pfrom->nVersion < 90003)
                  badVersion = true;
          }
          else
          {
-             if(pfrom->nVersion < 90007)
+             if(pfrom->nVersion < 90007)// Kick versions that have not updated.
                  badVersion = true;
          }
          if(badVersion)
