@@ -1147,7 +1147,12 @@ unsigned int static GetNextTargetRequired(const CBlockIndex* pindexLast, bool fP
         return bnInitialHashTarget.GetCompact(); // second block
 
     int64 nActualSpacing = pindexPrev->GetBlockTime() - pindexPrevPrev->GetBlockTime();
-
+	int64 nCheckTime=GetTime();
+     if(nCheckTime > 1395619200) //Human time (GMT): Tue, 07 Jan 2014 02:00:00 GMT
+     {
+         int nHeight = pindexPrev->nHeight+1;
+            if (nHeight >= 205830 & nActualSpacing < 0) nActualSpacing = 0;  //Sanity Check on nActualSpacing, corrects negative block values
+     }
     // ppcoin: target change every block
     // ppcoin: retarget with exponential moving toward target spacing
     CBigNum bnNew;
@@ -2961,6 +2966,7 @@ bool static ProcessMessage(CNode* pfrom, string strCommand, CDataStream& vRecv)
         CAddress addrMe;
         CAddress addrFrom;
         uint64 nNonce = 1;
+        bool badVersion = false;
         vRecv >> pfrom->nVersion >> pfrom->nServices >> nTime >> addrMe;
         if (pfrom->nVersion < MIN_PROTO_VERSION)
         {
@@ -2970,8 +2976,23 @@ bool static ProcessMessage(CNode* pfrom, string strCommand, CDataStream& vRecv)
             pfrom->fDisconnect = true;
             return false;
         }
-
-        if (pfrom->nVersion == 10300)
+		if(nTime < 1395619200)
+         {
+             if(pfrom->nVersion < 90003)
+                 badVersion = true;
+         }
+         else
+         {
+             if(pfrom->nVersion < 90007)
+                 badVersion = true;
+         }
+         if(badVersion)
+         {
+             printf("partner %s using obsolete version %i; disconnecting\n", pfrom->addr.ToString().c_str(), pfrom->nVersion);
+             pfrom->fDisconnect = true;
+             return false;
+         }
+       if (pfrom->nVersion == 10300)
             pfrom->nVersion = 300;
         if (!vRecv.empty())
             vRecv >> addrFrom >> nNonce;
